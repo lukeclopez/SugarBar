@@ -16,7 +16,7 @@ import json
 
 from secret_info import API_KEY
 
-BASE_URL = "http://luke-lopez-cgm.herokuapp.com"
+BASE_URL = "https://luke-lopez-cgm.herokuapp.com"
 ENDPOINT = "/api/v1/entries/sgv.json"
 TOKEN = "?token=" + API_KEY
 EMOJI_DROP_OF_BLOOD = "\U0001FA78"
