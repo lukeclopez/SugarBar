@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/homebrew/bin/python3
 # coding=utf-8
 #
 # <xbar.title>Dexcom Blood Sugar</xbar.title>
