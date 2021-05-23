@@ -44,11 +44,14 @@ COLORS = {
     "low": "red"
 }
 
+
 def refresh():
     sugar_mgdl, direction, delta = get_reading_data()
     display(sugar_mgdl, direction, delta)
 
+
 # Helpers
+
 
 def get_reading_data():
     res = requests.get(BASE_URL + ENDPOINT + TOKEN)
@@ -62,14 +65,18 @@ def get_reading_data():
     delta = get_delta(res.content)
     return (sugar_mgdl, direction, delta)
 
+
 def get_last_data(content):
     return json.loads(content)[0]
+
 
 def get_sugar_level(data):
     return str(data["sgv"])
 
+
 def get_direction(data):
     return data.get("direction")
+
 
 def get_delta(content):
     latest = get_last_data(content)
@@ -77,6 +84,7 @@ def get_delta(content):
     latest_sugar_level = int(get_sugar_level(latest))
     second_latest_sugar_level = int(get_sugar_level(second_latest))
     return latest_sugar_level - second_latest_sugar_level
+
 
 def display(sugar_mgdl, direction, delta):
     display = f"{EMOJI_DROP_OF_BLOOD} {sugar_mgdl} {get_direction_indicator(direction)}"
@@ -91,14 +99,17 @@ def display(sugar_mgdl, direction, delta):
 def get_direction_indicator(direction):
     return DIRECTIONS.get(direction, "E")
 
+
 def display_delta(delta):
     return f"+{delta}" if delta > 0 else delta
+
 
 def get_color(sugar_mgdl):
     sugar_mgdl = int(sugar_mgdl)
     status = "okay" if sugar_mgdl > BG_TARGET_BOTTOM else "low"
     status = "high" if sugar_mgdl >= BG_TARGET_TOP else status
     return COLORS[status]
+
 
 if __name__ == "__main__":
     refresh()
