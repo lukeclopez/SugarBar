@@ -11,5 +11,27 @@
 #
 # by lukeclopez
 
+import requests
+import json
+
+from secret_info import API_KEY
+
+BASE_URL = "http://luke-lopez-cgm.herokuapp.com"
+ENDPOINT = "/api/v1/entries/sgv.json"
+TOKEN = "?token=" + API_KEY
+DIRECTIONS = {
+    "Flat": "steady",
+    "FortyFiveUp": "rising",
+    "FortyFiveDown": "falling",
+    "SingleUp": "single up",
+    "DoubleUp": "double up",
+    "SingleDown": "single down",
+    "DoubleDown": "double down",
+    "NONE": "no slope",
+    "NOT_COMPUTABLE": "the slope is not computable",
+    "RATE_OUT_OF_RANGE": "the rate is out of range"
+}
+
+
 
 print("Hey you")
