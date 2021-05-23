@@ -19,6 +19,15 @@ from secret_info import API_KEY
 BASE_URL = "http://luke-lopez-cgm.herokuapp.com"
 ENDPOINT = "/api/v1/entries/sgv.json"
 TOKEN = "?token=" + API_KEY
+EMOJIS = {
+    "drop_of_blood": "\U0001FA78",
+    "arrow_upper_right": "↗",
+    "arrow_lower_right": "↘",
+    "arrow_down": "↓",
+    "arrow_up": "↑",
+    "arrow_right": "→"
+}
+
 DIRECTIONS = {
     "Flat": "steady",
     "FortyFiveUp": "rising",
