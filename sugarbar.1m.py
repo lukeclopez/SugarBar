@@ -20,6 +20,8 @@ BASE_URL = "http://luke-lopez-cgm.herokuapp.com"
 ENDPOINT = "/api/v1/entries/sgv.json"
 TOKEN = "?token=" + API_KEY
 EMOJI_DROP_OF_BLOOD = "\U0001FA78"
+BG_TARGET_BOTTOM = 80
+BG_TARGET_TOP = 180
 
 DIRECTIONS = {
     "Flat": "→",
@@ -32,6 +34,12 @@ DIRECTIONS = {
     "NONE": "?",
     "NOT_COMPUTABLE": "N/A",
     "RATE_OUT_OF_RANGE": "N/A"
+}
+
+COLORS = {
+    "okay": "white",
+    "high": "yellow",
+    "low": "red"
 }
 
 def refresh():
@@ -66,7 +74,10 @@ def get_direction_indicator(direction):
     return DIRECTIONS.get(direction, "E")
 
 def get_color(sugar_mgdl):
-    return "blue"
+    sugar_mgdl = int(sugar_mgdl)
+    status = "okay" if sugar_mgdl > BG_TARGET_BOTTOM else "low"
+    status = "high" if sugar_mgdl >= BG_TARGET_TOP else status
+    return COLORS[status]
 
 if __name__ == "__main__":
     refresh()
