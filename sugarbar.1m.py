@@ -23,6 +23,7 @@ EMOJI_DROP_OF_BLOOD = "\U0001FA78"
 BG_TARGET_BOTTOM = 80
 BG_TARGET_TOP = 180
 
+# Response value from Nightscout -> What will be shown on my menu bar
 DIRECTIONS = {
     "Flat": "→",
     "FortyFiveUp": "↗",
@@ -36,6 +37,7 @@ DIRECTIONS = {
     "RATE_OUT_OF_RANGE": "N/A"
 }
 
+# Calculated value -> the color the number and arrow will be
 COLORS = {
     "okay": "white",
     "high": "yellow",
