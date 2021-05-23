@@ -55,7 +55,7 @@ def display(sugar_mgdl, direction):
     print(display_string)
 
 def get_sugar_level(data):
-    str(data["sgv"])
+    return str(data["sgv"])
 
 def get_direction(data):
     return DIRECTIONS.get(data["direction"], "no direction found")
