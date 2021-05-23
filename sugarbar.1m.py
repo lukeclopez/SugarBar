@@ -32,6 +32,36 @@ DIRECTIONS = {
     "RATE_OUT_OF_RANGE": "the rate is out of range"
 }
 
+def refresh():
+    sugar_mgdl, direction = get_reading()
+    display(sugar_mgdl, direction)
 
 
-print("Hey you")
+
+def get_reading():
+    res = requests.get(BASE_URL + ENDPOINT + TOKEN)
+
+    if res.status_code != 200:
+        return (res.status_code, res.reason)
+
+    data = json.loads(res.content)[0]
+    sugar_mgdl = get_sugar_level(data)
+    direction = get_direction(data)
+    return (sugar_mgdl, direction)
+    
+
+def display(sugar_mgdl, direction):
+    display_string = f":drop_of_blood: {sugar_mgdl} {direction} | href={BASE_URL} | color={get_color(sugar_mgdl)}"
+    print(display_string)
+
+def get_sugar_level(data):
+    str(data["sgv"])
+
+def get_direction(data):
+    return DIRECTIONS.get(data["direction"], "no direction found")
+
+def get_color(sugar_mgdl):
+    return "blue"
+
+if __name__ == "__main__":
+    refresh()
