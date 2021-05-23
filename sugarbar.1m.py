@@ -45,7 +45,7 @@ def refresh():
     sugar_mgdl, direction = get_reading()
     display(sugar_mgdl, direction)
 
-
+# Helpers
 
 def get_reading():
     res = requests.get(BASE_URL + ENDPOINT + TOKEN)
@@ -60,7 +60,9 @@ def get_reading():
     
 
 def display(sugar_mgdl, direction):
-    display_string = f":drop_of_blood: {sugar_mgdl} {direction} | href={BASE_URL} | color={get_color(sugar_mgdl)}"
+    icon = EMOJIS["drop_of_blood"]
+    display = f"{icon} {sugar_mgdl} {direction}"
+    display_string = f"{display} | href={BASE_URL} | color={get_color(sugar_mgdl)}"
     print(display_string)
 
 def get_sugar_level(data):
