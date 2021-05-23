@@ -57,6 +57,7 @@ def get_reading_data():
         return (res.status_code, res.reason)
 
     data = json.loads(res.content)[0]
+    print(data)
     sugar_mgdl = get_sugar_level(data)
     direction = get_direction(data)
     return (sugar_mgdl, direction)
@@ -69,8 +70,11 @@ def get_direction(data):
 
 def display(sugar_mgdl, direction):
     display = f"{EMOJI_DROP_OF_BLOOD} {sugar_mgdl} {get_direction_indicator(direction)}"
-    display_string = f"{display} | href={BASE_URL} | color={get_color(sugar_mgdl)}"
+    options = f"| color={get_color(sugar_mgdl)}"
+    display_string = f"{display} {options}"
     print(display_string)
+    get_dropdown_menu()
+
 
 def get_direction_indicator(direction):
     return DIRECTIONS.get(direction, "E")
@@ -80,6 +84,10 @@ def get_color(sugar_mgdl):
     status = "okay" if sugar_mgdl > BG_TARGET_BOTTOM else "low"
     status = "high" if sugar_mgdl >= BG_TARGET_TOP else status
     return COLORS[status]
+
+def get_dropdown_menu():
+    print("---")
+    print("View Nightscout | | href={BASE_URL}")
 
 if __name__ == "__main__":
     refresh()
