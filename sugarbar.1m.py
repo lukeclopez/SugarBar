@@ -19,26 +19,19 @@ from secret_info import API_KEY
 BASE_URL = "http://luke-lopez-cgm.herokuapp.com"
 ENDPOINT = "/api/v1/entries/sgv.json"
 TOKEN = "?token=" + API_KEY
-EMOJIS = {
-    "drop_of_blood": "\U0001FA78",
-    "arrow_upper_right": "↗",
-    "arrow_lower_right": "↘",
-    "arrow_down": "↓",
-    "arrow_up": "↑",
-    "arrow_right": "→"
-}
+EMOJI_DROP_OF_BLOOD = "\U0001FA78"
 
 DIRECTIONS = {
-    "Flat": "steady",
-    "FortyFiveUp": "rising",
-    "FortyFiveDown": "falling",
-    "SingleUp": "single up",
-    "DoubleUp": "double up",
-    "SingleDown": "single down",
-    "DoubleDown": "double down",
-    "NONE": "no slope",
-    "NOT_COMPUTABLE": "the slope is not computable",
-    "RATE_OUT_OF_RANGE": "the rate is out of range"
+    "Flat": "→",
+    "FortyFiveUp": "↗",
+    "FortyFiveDown": "↘",
+    "SingleUp": "↑",
+    "DoubleUp": "⇈",
+    "SingleDown": "↓",
+    "DoubleDown": "⇊",
+    "NONE": "?",
+    "NOT_COMPUTABLE": "N/A",
+    "RATE_OUT_OF_RANGE": "N/A"
 }
 
 def refresh():
@@ -60,8 +53,7 @@ def get_reading():
     
 
 def display(sugar_mgdl, direction):
-    icon = EMOJIS["drop_of_blood"]
-    display = f"{icon} {sugar_mgdl} {direction}"
+    display = f"{EMOJI_DROP_OF_BLOOD} {sugar_mgdl} {direction}"
     display_string = f"{display} | href={BASE_URL} | color={get_color(sugar_mgdl)}"
     print(display_string)
 
@@ -69,7 +61,7 @@ def get_sugar_level(data):
     return str(data["sgv"])
 
 def get_direction(data):
-    return DIRECTIONS.get(data["direction"], "no direction found")
+    return DIRECTIONS.get(data["direction"], "E")
 
 def get_color(sugar_mgdl):
     return "blue"
