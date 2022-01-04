@@ -75,7 +75,7 @@ def get_sugar_level(data):
 
 
 def get_direction(data):
-    return data.get("direction")
+    return data.get("trend")
 
 
 def get_delta(content):
