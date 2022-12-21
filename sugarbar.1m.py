@@ -47,6 +47,7 @@ def get_reading_data():
 
     sugar_mgdl = latest.mg_dl
     direction = latest.trend_arrow
+    # TODO: Remove the ternary if we never get less than 2 readings in our list
     delta = latest.mg_dl - previous.mg_dl if len(bg_readings) == 2 else 999
     latest_reading_time = latest.time
 
