@@ -16,8 +16,8 @@ from pydexcom import Dexcom
 from secret_info import USERNAME, PASSWORD
 
 dexcom = Dexcom(USERNAME, PASSWORD)
-
 EMOJI_DROP_OF_BLOOD = "\U0001FA78"
+TIME_FORMAT = "%I:%M:%S %p"
 BG_TARGET_BOTTOM = 80
 BG_TARGET_TOP = 180
 
@@ -61,7 +61,8 @@ def display(sugar_mgdl, direction, delta, latest_reading_time):
     print(display_string)
     print("---")
     print(f"{display_delta(delta)} from previous")
-    print(f"Latest reading time: {latest_reading_time}")
+    formatted_time = latest_reading_time.strftime(TIME_FORMAT)
+    print(f"Last Reading: {formatted_time}")
 
 
 def display_delta(delta):
