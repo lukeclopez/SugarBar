@@ -48,7 +48,7 @@ def get_reading_data():
     sugar_mgdl = latest.mg_dl
     direction = latest.trend_arrow
     delta = latest.mg_dl - previous.mg_dl if len(bg_readings) == 2 else 999
-    latest_reading_time = latest.times
+    latest_reading_time = latest.time
 
     return (sugar_mgdl, direction, delta, latest_reading_time)
 
