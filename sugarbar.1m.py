@@ -5,37 +5,21 @@
 # <xbar.version>v1.0</xbar.version>
 # <xbar.author>lukeclopez</xbar.author>
 # <xbar.author.github>lukeclopez</xbar.author.github>
-# <xbar.desc>Displays my blood sugar from night scout</xbar.desc>
+# <xbar.desc>Displays my blood sugar from Dexcom</xbar.desc>
 # <xbar.image>https://i.imgur.com/I3MdNmU.png</xbar.image>
 # <xbar.dependencies>python</xbar.dependencies>
+# <xbar.dependencies>pydexcom python package</xbar.dependencies>
 #
 # by lukeclopez
 
-import requests
-import json
+from pydexcom import Dexcom
+from secret_info import USERNAME, PASSWORD
 
-from secret_info import API_KEY
+dexcom = Dexcom(USERNAME, PASSWORD)
 
-BASE_URL = "https://luke-lopez-cgm.herokuapp.com"
-ENDPOINT = "/api/v1/entries/sgv.json"
-TOKEN = "?token=" + API_KEY
 EMOJI_DROP_OF_BLOOD = "\U0001FA78"
 BG_TARGET_BOTTOM = 80
 BG_TARGET_TOP = 180
-
-# Response value from Nightscout -> What will be shown on my menu bar
-DIRECTIONS = {
-    "Flat": "→",
-    "FortyFiveUp": "↗",
-    "FortyFiveDown": "↘",
-    "SingleUp": "↑",
-    "DoubleUp": "⇈",
-    "SingleDown": "↓",
-    "DoubleDown": "⇊",
-    "NONE": "?",
-    "NOT_COMPUTABLE": "N/A",
-    "RATE_OUT_OF_RANGE": "N/A"
-}
 
 # Calculated value -> the color the number and arrow will be
 COLORS = {
@@ -46,58 +30,37 @@ COLORS = {
 
 
 def refresh():
-    sugar_mgdl, direction, delta = get_reading_data()
-    display(sugar_mgdl, direction, delta)
+    sugar_mgdl, direction, delta, latest_reading_time = get_reading_data()
+    display(sugar_mgdl, direction, delta, latest_reading_time)
 
 
 # Helpers
 
 
 def get_reading_data():
-    res = requests.get(BASE_URL + ENDPOINT + TOKEN)
+    minutes = 30
+    max_count = 2
+    bg_readings = dexcom.get_glucose_readings(minutes, max_count)
 
-    if res.status_code != 200:
-        return (res.status_code, res.reason)
+    latest = bg_readings[0]
+    previous = bg_readings[-1]
 
-    data = get_last_data(res.content)
-    sugar_mgdl = get_sugar_level(data)
-    direction = get_direction(data)
-    delta = get_delta(res.content)
-    return (sugar_mgdl, direction, delta)
+    sugar_mgdl = latest.mg_dl
+    direction = latest.trend_arrow
+    delta = latest.mg_dl - previous.mg_dl if len(bg_readings) == 2 else 999
+    latest_reading_time = latest.times
 
-
-def get_last_data(content):
-    return json.loads(content)[0]
-
-
-def get_sugar_level(data):
-    return str(data["sgv"])
+    return (sugar_mgdl, direction, delta, latest_reading_time)
 
 
-def get_direction(data):
-    return data.get("trend")
-
-
-def get_delta(content):
-    latest = get_last_data(content)
-    second_latest = json.loads(content)[1]
-    latest_sugar_level = int(get_sugar_level(latest))
-    second_latest_sugar_level = int(get_sugar_level(second_latest))
-    return latest_sugar_level - second_latest_sugar_level
-
-
-def display(sugar_mgdl, direction, delta):
-    display = f"{EMOJI_DROP_OF_BLOOD} {sugar_mgdl} {get_direction_indicator(direction)}"
+def display(sugar_mgdl, direction, delta, latest_reading_time):
+    display = f"{EMOJI_DROP_OF_BLOOD} {sugar_mgdl} {direction}"
     options = f"| color={get_color(sugar_mgdl)}"
     display_string = f"{display} {options}"
     print(display_string)
     print("---")
     print(f"{display_delta(delta)} from previous")
-    print(f"View Nightscout | | href={BASE_URL}")
-
-
-def get_direction_indicator(direction):
-    return DIRECTIONS.get(direction, "E")
+    print(f"Latest reading time: {latest_reading_time}")
 
 
 def display_delta(delta):
